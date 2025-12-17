@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lovers' Vow - Find Your Perfect Match</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        
+        :root {
+            --primary: #ec4899;
+            --primary-dark: #db2777;
+            --secondary: #f59e0b;
+            --dark: #111827;
+            --dark-light: #1f2937;
+            --light: #f9fafb;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .navbar-blur {
+            backdrop-filter: blur(15px);
+            background-color: rgba(26, 26, 46, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card-dark {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .profile-card {
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .profile-image {
+            height: 280px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        /* Adjusted image height for mobile */
+        @media (max-width: 640px) {
+            .profile-image {
+                height: 220px;
+            }
+        }
+        
+        .profile-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 1rem;
+            color: white;
+        }
+        
+        .online-indicator {
+            width: 12px;
+            height: 12px;
+            background-color: #10B981;
+            border-radius: 50%;
+            border: 2px solid white;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        
+        .reaction-buttons {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .branded {
+            font-family: 'Pacifico', cursive;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .reaction-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            z-index: 20;
+            position: relative;
+        }
+        
+        .reaction-btn:hover {
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .message-btn {
+            background: rgba(59, 130, 246, 0.7);
+        }
+        
+        .message-btn:hover {
+            background: rgba(59, 130, 246, 0.9);
+        }
+        
+        .star-rating {
+            display: flex;
+            gap: 2px;
+            margin-top: 3px;
+        }
+        
+        .star {
+            color: #f59e0b;
+            font-size: 0.7rem;
+        }
+        
+        /* Hero section with 8 images per slide */
+        .hero-swiper {
+            width: 100%;
+            height: 180px;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        /* Further reduce space on mobile */
+        @media (max-width: 768px) {
+            .hero-swiper {
+                margin-bottom: 10px;
+            }
+        }
+        
+        .hero-slide {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            padding: 0 10px;
+        }
+        
+        .hero-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--primary);
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 1.2rem;
+        }
+        
+        /* Pagination styling */
+        .swiper-pagination {
+            position: relative !important;
+            bottom: 0 !important;
+            margin-top: 10px;
+            height: 20px;
+        }
+        
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 1;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: var(--dark-light);
+            flex-direction: column;
+            padding: 80px 20px 20px;
+            transition: all 0.3s ease;
+            z-index: 998;
+        }
+        
+        .menu.active {
+            right: 0;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 997;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Mobile menu toggler styling */
+        .header-bar {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 999;
+            position: relative;
+        }
+        
+        .header-bar span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .header-bar.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .header-bar.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .header-bar.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+        /* View Profile Button */
+        .view-profile-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+        }
+        
+        .view-profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
+            background: linear-gradient(to right, var(--primary-dark), #fbbf24);
+        }
+        
+        /* Profile Card Content */
+        .profile-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-quote {
+            color: #d1d5db;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .looking-for {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .looking-for-label {
+            color: #9ca3af;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: block;
+        }
+        
+        .looking-for-tags {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        /* Responsive hero slider */
+        @media (max-width: 1024px) {
+            .hero-slide {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .hero-swiper {
+                height: 340px;
+            }
+        }
+        
+        /* Tablet view - 4 images per row */
+        @media (max-width: 768px) {
+            .hero-slide {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .hero-swiper {
+                height: 180px;
+            }
+            
+            /* Reduce space between sections on tablet */
+            section.py-12 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            
+            .profile-quote {
+                font-size: 0.9rem;
+            }
+            
+            .view-profile-btn {
+                padding: 9px 14px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Mobile view - 3 images per row, horizontal slider */
+        @media (max-width: 640px) {
+            .hero-slide {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+                padding: 0 5px;
+            }
+            
+            .hero-swiper {
+                height: 140px;
+                padding-bottom: 30px;
+            }
+            
+            .hero-image {
+                height: 120px;
+            }
+            
+            .swiper-button-next, .swiper-button-prev {
+                display: none;
+            }
+            
+            /* Reduce space between sections on mobile */
+            section.py-12 {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+            
+            h2.text-3xl {
+                font-size: 1.75rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .profile-content {
+                padding: 1rem;
+            }
+            
+            .profile-quote {
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+            
+            .view-profile-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .hero-slide {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+            
+            .hero-swiper {
+                height: 130px;
+                margin-bottom: 5px;
+            }
+            
+            .hero-image {
+                height: 110px;
+            }
+            
+            /* Further reduce space on extra small screens */
+            section.pt-32.pb-8 {
+                padding-top: 7rem;
+                padding-bottom: 1rem;
+            }
+            
+            section.py-12 {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+            
+            .profile-content {
+                padding: 0.875rem;
+            }
+            
+            .looking-for {
+                padding: 0.625rem;
+            }
+        }
+        
+        /* Fix mobile menu button positioning */
+        @media (max-width: 1024px) {
+            .header-bar {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter">
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar-blur fixed w-full z-50 py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <!-- Navbar Brand -->
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center mr-3 shadow-lg">
+                        <i class="fas fa-heart text-white"></i>
+                    </div>
+                   <span class="text-xl font-bold text-white">Lovers'<span
+                            class="branded">Vow</span></span>
+                </div>
+
+                <!-- Desktop Menu-->
+                <ul class="hidden lg:flex items-center space-x-8">
+                    <li>
+                        <a href="home.html" class="text-white font-medium relative group">
+                            Home
+                            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-secondary"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="community.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium relative group">
+                            Community
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="membership.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium relative group">
+                            Membership
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="profile.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium relative group">
+                            Profile
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="user-setting.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium relative group">
+                            Settings
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Auth Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="user-setting.html" class="text-white font-medium relative group">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white text-sm"></i>
+                            </div>
+                            <span>Sarah</span>
+                        </div>
+                    </a>
+                    <a href="login.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium">Log Out</a>
+                </div>
+
+                <!-- Mobile Menu Button - Fixed positioning -->
+                <div class="header-bar lg:hidden relative z-50">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <ul class="menu lg:hidden">
+        <button class="mobile-menu-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <li>
+            <a href="home.html" class="text-white font-medium block py-3 border-b border-gray-700">Home</a>
+        </li>
+        <li>
+            <a href="community.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium block py-3 border-b border-gray-700">Community</a>
+        </li>
+        <li>
+            <a href="membership.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium block py-3 border-b border-gray-700">Membership</a>
+        </li>
+        <li>
+            <a href="profile.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium block py-3 border-b border-gray-700">Profile</a>
+        </li>
+        <li>
+            <a href="user-setting.html" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium block py-3 border-b border-gray-700">Settings</a>
+        </li>
+        <li class="pt-6 border-t border-gray-700 mt-4">
+            <a href="user-setting.html" class="bg-transparent border border-gray-600 text-white px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-300 font-medium block text-center">
+                My Profile
+            </a>
+        </li>
+        <li class="pt-4">
+            <a href="login.html" class="bg-gradient-to-r from-primary to-secondary text-white px-4 py-3 rounded-lg transition-colors duration-300 font-medium block text-center">
+                Log Out
+            </a>
+        </li>
+    </ul>
+
+    <!-- Hero Section with Sliding Grid -->
+    <section class="pt-32 pb-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-white text-center mb-4">Find Your Perfect <span class="section-title">Match</span></h1>
+            <p class="text-gray-300 text-center mb-6 max-w-2xl mx-auto">Connect with amazing people who share your interests and values</p>
+            
+            <!-- Slider main container -->
+            <div class="hero-swiper">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <!-- Slide 1 - 3 images for mobile, 8 for desktop -->
+                    <div class="swiper-slide">
+                        <div class="hero-slide">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 1" class="hero-image">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 2" class="hero-image">
+                            <img src="https://plus.unsplash.com/premium_photo-1672239496290-5061cfee7ebb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG1hbnxlbnwwfHwwfHx8MA%3D%3D" alt="User 3" class="hero-image">
+                            <!-- Desktop only images -->
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 4" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 5" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 6" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 7" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 8" class="hero-image hidden md:block">
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide">
+                        <div class="hero-slide">
+                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 9" class="hero-image">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 10" class="hero-image">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 11" class="hero-image">
+                            <!-- Desktop only images -->
+                            <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 12" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 13" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 14" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 15" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 16" class="hero-image hidden md:block">
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="swiper-slide">
+                        <div class="hero-slide">
+                            <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 17" class="hero-image">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 18" class="hero-image">
+                            <img src="https://images.unsplash.com/photo-1480455624313-e29b44bbfde1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbnxlbnwwfHwwfHx8MA%3D%3D" alt="User 19" class="hero-image">
+                            <!-- Desktop only images -->
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 20" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 21" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 22" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 23" class="hero-image hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="User 24" class="hero-image hidden md:block">
+                        </div>
+                    </div>
+                </div>
+                <!-- If we need pagination -->
+                <div class="swiper-pagination"></div>
+
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profiles Section -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-white text-center mb-10">Featured <span class="section-title">Profiles</span></h2>
+            
+            <!-- Updated grid: 2 columns on small screens, 3 on medium, 4 on large -->
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Profile 1 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="emma-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Emma" class="profile-image">
+                        <div class="online-indicator"></div>
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=emma" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Emma, 28</h3>
+                            <p class="text-gray-300 text-sm">New York</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Looking for someone who shares my passion for travel and adventure. Love hiking, trying new cuisines, and exploring different cultures."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Adventurous, Kind</div>
+                        </div>
+                        
+                        <a href="emma-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 2 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="sophia-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Sophia" class="profile-image">
+                        <div class="online-indicator"></div>
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=sophia" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Sophia, 26</h3>
+                            <p class="text-gray-300 text-sm">Los Angeles</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Creative soul seeking a partner to share art and deep conversations. I enjoy painting, visiting museums, and discussing philosophy."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Creative, Intelligent</div>
+                        </div>
+                        
+                        <a href="sophia-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 3 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="andrew-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1557862921-37829c790f19?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFufGVufDB8fDB8fHww" 
+                             alt="Andrew" class="profile-image">
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=andrew" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Andrew, 29</h3>
+                            <p class="text-gray-300 text-sm">Chicago</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Professional who values honesty and loyalty in a relationship. I enjoy cooking, watching documentaries, and weekend getaways."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Ambitious, Honest</div>
+                        </div>
+                        
+                        <a href="andrew-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 4 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="mia-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Mia" class="profile-image">
+                        <div class="online-indicator"></div>
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=mia" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Mia, 27</h3>
+                            <p class="text-gray-300 text-sm">Miami</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star-half-alt star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Fitness enthusiast looking for someone to share healthy lifestyle. I love yoga, beach runs, and cooking nutritious meals together."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Active, Positive</div>
+                        </div>
+                        
+                        <a href="mia-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+
+                 <!-- Profile 5 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="olivia-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Olivia" class="profile-image">
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=olivia" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Olivia, 30</h3>
+                            <p class="text-gray-300 text-sm">Seattle</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Book lover seeking intellectual conversations and cozy weekends. Enjoy literary discussions, rainy days, and visiting coffee shops."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Intellectual, Kind</div>
+                        </div>
+                        
+                        <a href="olivia-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 6 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="isabella-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Isabella" class="profile-image">
+                        <div class="online-indicator"></div>
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=isabella" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Isabella, 25</h3>
+                            <p class="text-gray-300 text-sm">Austin</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Artist and free spirit looking for someone who appreciates creativity. I enjoy painting murals, attending concerts, and spontaneous adventures."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Creative, Open-minded</div>
+                        </div>
+                        
+                        <a href="isabella-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 7 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="michael-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Michael" class="profile-image">
+                        <div class="online-indicator"></div>
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=michael" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Michael, 32</h3>
+                            <p class="text-gray-300 text-sm">Boston</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Entrepreneur looking for a partner to build a future together. I value ambition, support, and shared goals in a relationship."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Ambitious, Supportive</div>
+                        </div>
+                        
+                        <a href="michael-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 8 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="david-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="David" class="profile-image">
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=david" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">David, 29</h3>
+                            <p class="text-gray-300 text-sm">Denver</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Outdoor enthusiast seeking adventure partner for hiking and camping. Let's explore national parks and enjoy nature together."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Adventurous, Active</div>
+                        </div>
+                        
+                        <a href="david-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 9 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="james-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="James" class="profile-image">
+                        <div class="online-indicator"></div>
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=james" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">James, 31</h3>
+                            <p class="text-gray-300 text-sm">Portland</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star-half-alt star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Musician looking for someone to share creative energy and passion. I play guitar, write songs, and love attending live music events."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Creative, Passionate</div>
+                        </div>
+                        
+                        <a href="james-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 10 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="daniel-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Daniel" class="profile-image">
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=daniel" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Daniel, 28</h3>
+                            <p class="text-gray-300 text-sm">San Diego</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Tech professional seeking meaningful connection and shared interests. Enjoy coding projects, sci-fi movies, and board game nights."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Intelligent, Curious</div>
+                        </div>
+                        
+                        <a href="daniel-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 11 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="matthew-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Matthew" class="profile-image">
+                        <div class="online-indicator"></div>
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=matthew" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Matthew, 33</h3>
+                            <p class="text-gray-300 text-sm">Phoenix</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Family-oriented professional looking for a serious, committed relationship. Value traditions, Sunday dinners, and building a home together."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Loyal, Family-oriented</div>
+                        </div>
+                        
+                        <a href="matthew-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Profile 12 -->
+                <div class="profile-card card-dark">
+                    <div class="relative">
+                        <a href="andrew2-profile.html" class="absolute inset-0 z-10"></a>
+                        <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Andrew" class="profile-image">
+                        <div class="reaction-buttons">
+                            <a href="messages.html?user=andrew2" class="reaction-btn message-btn">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <div class="reaction-btn">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="reaction-btn">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-overlay">
+                            <h3 class="font-bold text-lg">Andrew, 27</h3>
+                            <p class="text-gray-300 text-sm">Nashville</p>
+                            <div class="star-rating">
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="fas fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                                <i class="far fa-star star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <p class="profile-quote">"Chef looking for someone to share culinary adventures and good food. Let's explore farmers markets and cook delicious meals together."</p>
+                        
+                        <div class="looking-for">
+                            <span class="looking-for-label">Looking for:</span>
+                            <div class="looking-for-tags">Foodie, Adventurous</div>
+                        </div>
+                        
+                        <a href="andrew2-profile.html" class="view-profile-btn">
+                            <i class="fas fa-user-circle"></i>
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-amber-600 text-white px-8 py-3 rounded-lg transition-all duration-300 font-medium shadow-lg hover:shadow-xl">
+                    Load More Profiles
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Column 1: Brand & Social -->
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-pink-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold">LV</span>
+                        </div>
+                        <span class="text-xl font-bold">Lovers'Vow</span>
+                    </div>
+                    <p class="text-gray-300 mb-6 text-lg">
+                        Connect with amazing people and find meaningful relationships.
+                    </p>
+                    <!-- Social Icons -->
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Documents -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-pink-400">Documents</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-chevron-right text-pink-500 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
+                                Privacy Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-chevron-right text-pink-500 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
+                                Terms of use
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-chevron-right text-pink-500 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
+                                Customer Support
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Information -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-pink-400">Information</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-chevron-right text-pink-500 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
+                                Payments Rules
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-chevron-right text-pink-500 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
+                                Security
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-chevron-right text-pink-500 text-xs mr-3 group-hover:translate-x-1 transition-transform"></i>
+                                Blog
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-pink-400">Subscribe to newsletter</h3>
+                    <p class="text-gray-300 mb-6">Stay updated with our latest features and offers</p>
+                    <div class="space-y-4">
+                        <div class="flex flex-col space-y-2">
+                            <label class="text-gray-400 text-sm font-medium">Email</label>
+                            <input type="email" placeholder="Enter your email" class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-pink-500 transition-colors duration-300">
+                        </div>
+                        <button class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="text-center">
+                    <div class="text-gray-400 text-sm">
+                        © Copyright 2024, All Rights Reserved by Lovers' Vow
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Mobile Menu
+            $('.header-bar').click(function () {
+                $(this).toggleClass('active');
+                $('.menu, .overlay').toggleClass('active');
+            });
+
+            $('.overlay').click(function () {
+                $('.header-bar').removeClass('active');
+                $('.menu, .overlay').removeClass('active');
+            });
+
+            $('.mobile-menu-close').click(function () {
+                $('.header-bar').removeClass('active');
+                $('.menu, .overlay').removeClass('active');
+            });
+
+            // Close mobile menu when a link is clicked
+            $('.menu a').click(function() {
+                $('.header-bar').removeClass('active');
+                $('.menu, .overlay').removeClass('active');
+            });
+
+            // Initialize Hero Swiper with responsive settings
+            const heroSwiper = new Swiper('.hero-swiper', {
+                loop: true,
+                autoplay: {
+                    delay: 4000,
+                },
+                slidesPerView: 1,
+                spaceBetween: 10,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    dynamicBullets: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                // Touch gestures for better mobile experience
+                touchRatio: 1,
+                simulateTouch: true,
+                grabCursor: true,
+                resistanceRatio: 0.5,
+                // Responsive breakpoints
+                breakpoints: {
+                    // When window width is >= 640px
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                    // When window width is >= 768px
+                    768: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                    // When window width is >= 1024px
+                    1024: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                }
+            });
+
+            // Reaction buttons functionality
+            $('.reaction-btn:not(.message-btn)').click(function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const icon = $(this).find('i');
+                
+                if (icon.hasClass('fas')) {
+                    icon.removeClass('fas').addClass('far');
+                } else {
+                    icon.removeClass('far').addClass('fas');
+                    
+                    // Add animation effect
+                    $(this).css('transform', 'scale(1.3)');
+                    setTimeout(() => {
+                        $(this).css('transform', 'scale(1)');
+                    }, 300);
+                }
+            });
+            
+            // Ensure slider is touch-friendly on mobile
+            if ('ontouchstart' in window) {
+                $('.hero-swiper').css('cursor', 'grab');
+                
+                // Prevent default touch actions that might interfere
+                $('.hero-swiper').on('touchmove', function(e) {
+                    e.preventDefault();
+                }, { passive: false });
+            }
+            
+            // Profile card click handler for the entire card
+            $('.profile-card .relative').click(function(e) {
+                // Don't trigger if clicking on buttons or links inside
+                if ($(e.target).closest('.reaction-btn').length || 
+                    $(e.target).closest('.view-profile-btn').length ||
+                    $(e.target).closest('button').length) {
+                    return;
+                }
+                
+                // Find the profile link and follow it
+                const profileLink = $(this).find('a').attr('href');
+                if (profileLink) {
+                    window.location.href = profileLink;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
